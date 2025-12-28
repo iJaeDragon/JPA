@@ -143,6 +143,23 @@ create table MEMBER (
 
 ---
 
+### 예제
+
+```
+@Entity
+public class Member {
+
+    @Id
+    private Long id;
+
+    @Column(nullable = false, length = 20)
+    private String username;
+
+    @Column(unique = true)
+    private String email;
+}
+```
+
 ### @Enumerated
 
 ```java
@@ -205,20 +222,41 @@ ADMIN
 ### IDENTITY 전략 특징
 
 * persist 시점에 즉시 INSERT
+* AUTO_INCREMENT 기반
 * 쓰기 지연 전략 사용 불가
+
+```java
+@Entity
+public class Member {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+}
+```
 
 ---
 
 ### SEQUENCE 전략
 
 ```java
+@Entity
 @SequenceGenerator(
- name = "MEMBER_SEQ_GEN",
- sequenceName = "MEMBER_SEQ",
- allocationSize = 1
+    name = "MEMBER_SEQ_GEN",
+    sequenceName = "MEMBER_SEQ",
+    allocationSize = 1
 )
-```
+public class Member {
 
+    @Id
+    @GeneratedValue(
+        strategy = GenerationType.SEQUENCE,
+        generator = "MEMBER_SEQ_GEN"
+    )
+    private Long id;
+}
+```
+* 시퀀스 기반
 * allocationSize 기본값 = 50
 * 성능 최적화를 위한 미리 할당 전략
 
@@ -230,6 +268,24 @@ ADMIN
 * 성능 가장 낮음
 * 실무에서는 거의 사용하지 않음
 
+```
+@Entity
+@TableGenerator(
+    name = "MEMBER_SEQ_GEN",
+    table = "MY_SEQUENCES",
+    pkColumnValue = "MEMBER_SEQ",
+    allocationSize = 1
+)
+public class Member {
+
+    @Id
+    @GeneratedValue(
+        strategy = GenerationType.TABLE,
+        generator = "MEMBER_SEQ_GEN"
+    )
+    private Long id;
+}
+```
 ---
 
 ## 6. 권장 식별자 전략
@@ -246,6 +302,18 @@ ADMIN
 
 * 자연키 사용 지양
 * 비즈니스 변경에 안전
+* 의미 없는 대리키 사용
+* 의미 없는 대리키 사용
+
+```java
+@Entity
+public class Order {
+
+    @Id
+    @GeneratedValue
+    private Long id;
+}
+```
 
 ---
 
