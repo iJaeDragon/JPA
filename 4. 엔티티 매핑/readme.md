@@ -22,7 +22,13 @@ JPA를 사용하는 순간, 테이블이 아닌 **객체 설계가 중심**이 �
 
 ```java
 @Entity
-public class Member { }
+public class Member {
+
+    @Id
+    private Long id;
+
+    private String username;
+}
 ```
 
 * JPA가 관리하는 객체임을 선언
@@ -46,7 +52,15 @@ public class Member { }
 ### @Table
 
 ```java
+@Entity
 @Table(name = "MEMBER")
+public class Member {
+
+    @Id
+    private Long id;
+
+    private String username;
+}
 ```
 
 | 속성                | 설명           |
@@ -75,6 +89,21 @@ public class Member { }
 | none        | 미사용            | 운영       |
 
 > 운영 서버: **validate 또는 none만 사용**
+
+### persistence.xml 설정 예제
+```xml
+<property name="hibernate.hbm2ddl.auto" value="create" />
+<property name="hibernate.dialect" value="org.hibernate.dialect.H2Dialect" />
+```
+
+### 실행시 생성되는 DDL (H2기준)
+```sql
+create table MEMBER (
+    id bigint not null,
+    username varchar(255),
+    primary key (id)
+);
+```
 
 ---
 
@@ -117,7 +146,21 @@ public class Member { }
 ### @Enumerated
 
 ```java
+public enum RoleType {
+    USER, ADMIN
+}
+```
+
+```java
+// EnumType.ORDINAL 사용 시 0, 1(인덱스 순서)로 저장되어 순서 변경 시 치명적 오류 발생
 @Enumerated(EnumType.STRING)
+private RoleType roleType;
+```
+
+### DB 저장 값 예시
+```text
+USER
+ADMIN
 ```
 
 * **ORDINAL 절대 사용 금지**
@@ -214,9 +257,3 @@ public class Member { }
 * 기본 키는 Long + 대리키 전략
 
 ---
-
-다음 추천 주제:
-
-* 연관관계 매핑 (가장 중요)
-* 단방향 / 양방향 설계 기준
-* N+1 문제의 시작점
