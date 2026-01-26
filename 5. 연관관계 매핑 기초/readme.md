@@ -34,6 +34,8 @@
 
 ### ❌ 잘못된 방법: 테이블에 맞춘 모델링
 
+<img width="640" height="426" alt="image" src="https://github.com/user-attachments/assets/18518cc8-3794-490d-99e0-0f3411cc5040" />
+
 객체를 테이블 구조에 맞춰 설계하면 객체지향의 장점을 잃게 됩니다.
 
 ```java
@@ -98,6 +100,9 @@ Team findTeam = em.find(Team.class, findMember.getTeamId());  // ❌ 번거로�
 
 ### ✅ 올바른 방법: 객체 지향 모델링
 
+<img width="643" height="440" alt="image" src="https://github.com/user-attachments/assets/4f60c30d-66fc-4df3-bda9-09b2ea894fcb" />
+
+
 객체의 참조와 테이블의 외래 키를 매핑합니다.
 
 ```java
@@ -116,6 +121,9 @@ public class Member {
     private Team team;  // ✅ 참조로 연관관계 표현
 }
 ```
+
+<img width="637" height="434" alt="image" src="https://github.com/user-attachments/assets/8facb054-c78c-4392-9f51-984e80d22d77" />
+
 
 ### 연관관계 저장
 
@@ -223,6 +231,8 @@ int memberSize = findTeam.getMembers().size();  // ✅ Team에서 Member 조회
 
 객체의 양방향 관계는 사실 **서로 다른 단방향 관계 2개**입니다.
 
+<img width="639" height="423" alt="image" src="https://github.com/user-attachments/assets/4b9d34c3-7884-4690-97c1-949539a90662" />
+
 ```java
 class A {
     B b;  // A → B
@@ -249,11 +259,15 @@ FROM TEAM T
 JOIN MEMBER M ON T.TEAM_ID = M.TEAM_ID;
 ```
 
+<img width="637" height="416" alt="image" src="https://github.com/user-attachments/assets/6f8cde3e-e23a-4116-8d49-f21e89a603c2" />
+
 ### ⚠️ 문제: 외래 키를 누가 관리할 것인가?
 
 Member의 team과 Team의 members 중 **어느 것으로 외래 키를 관리**해야 할까?
 
 **→ 연관관계의 주인(Owner)을 정해야 합니다!**
+
+<img width="630" height="260" alt="image" src="https://github.com/user-attachments/assets/eada6239-e553-45e3-95f2-0f786b2fbe04" />
 
 ---
 
@@ -273,6 +287,8 @@ Member의 team과 Team의 members 중 **어느 것으로 외래 키를 관리**�
 
 - **Member.team**이 연관관계의 주인 (외래 키 보유)
 - Team.members는 읽기 전용 (mappedBy 사용)
+
+<img width="560" height="269" alt="image" src="https://github.com/user-attachments/assets/15423e52-1380-45dc-bf45-0aa56269aca0" />
 
 ---
 
